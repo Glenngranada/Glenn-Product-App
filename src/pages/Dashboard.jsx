@@ -66,7 +66,7 @@ function Dashboard(props) {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              Stock App
+              Sweet Harvest Hub
             </Typography>
             {user && (
               <Button color="inherit" onClick={logout}>

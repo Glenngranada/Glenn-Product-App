@@ -15,7 +15,7 @@ const useAuthCalls = () => {
             const { data } = await axiosPublic.post("/auth/login/", userInfo)
             dispatch(loginSuccess(data))
             toastSuccessNotify("The login process is successful.")   
-            navigate("/stock")   
+            navigate("/products/lists")   
         } catch (error) {
             console.log(error)
             dispatch(fetchFail())
@@ -29,7 +29,7 @@ const useAuthCalls = () => {
             const { data } = await axiosPublic.post("/users/", registerInfo)
             dispatch(registerSuccess(data))
             toastSuccessNotify("The register process is successful.")   
-            navigate("/stock")   
+            navigate("/products/lists")   
         } catch (error) {
             console.log(error)
             dispatch(fetchFail())
