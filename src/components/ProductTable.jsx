@@ -16,7 +16,7 @@ export default function ProductTable({products}) {
   const [storageChange, setStorageChange] = React.useState(false);
   const { getpProducts } = useProductServicesCalls();
 
-  const getRowId = (row) => row.id;
+  const getRowId = (row) => row._id;
 
   // const columns = [
   //   {
@@ -83,7 +83,7 @@ export default function ProductTable({products}) {
 
   const columns = [
     {
-      field: "id",
+      field: "_id",
       headerName: "#",
       flex: 1,
       minWidth: 100,
@@ -136,7 +136,7 @@ export default function ProductTable({products}) {
       getActions: (params) => [
         <GridActionsCellItem
           icon={<DeleteForeverIcon />}
-          onClick={() => deleteData("products", params?.id)}
+          onClick={() => deleteData("products", params?._id)}
           label="Delete"
         />,
       ],

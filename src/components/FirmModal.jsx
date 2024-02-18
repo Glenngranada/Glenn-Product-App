@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import useStockCalls from "../service/useStockCalls";
+import useStockCalls from "../service/useGlennAppsCalls";
 import { modalStyle } from "../styles/globalStyles";
 
 export default function FirmModal({ handleClose, open, data, setData }) {

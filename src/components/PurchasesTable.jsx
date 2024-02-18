@@ -4,7 +4,7 @@ import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
-import useStockCalls from "../service/useStockCalls";
+import useStockCalls from "../service/useGlennAppsCalls";
 
 export default function PurchasesTable({ handleOpen, data, setData }) {
   const { deleteStock } = useStockCalls();
@@ -16,7 +16,7 @@ export default function PurchasesTable({ handleOpen, data, setData }) {
     handleOpen();
     setData({
       ...data,
-      _id: params?.id,
+      _id: params?._id,
       firmId: params?.row?.firmId?._id,
       brandId: params?.row?.brandId?._id,
       productId: params?.row?.productId?._id,

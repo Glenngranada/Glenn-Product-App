@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchFail, fetchStart, loginSuccess, logoutSuccess, registerSuccess } from "../features/authSlice";
 import { useDispatch } from "react-redux";
 import useAxios from "./useAxios";
-import useIndexedDBService from './useIndexedDBService';
+import useIndexedDBService from './useIndexedDandLocalStorageService';
 
 const useAuthCalls = () => {
     const navigate = useNavigate()
@@ -17,8 +17,9 @@ const useAuthCalls = () => {
         console.log(user, 'user');
         if (user && user.password === authData.password) {
             dispatch(loginSuccess({
-                user,
-                token : user.id
+                user: user,
+                token : user._id,
+                error: false
             }));
             toastSuccessNotify("The login process is successful.");   
             navigate("/products/lists")

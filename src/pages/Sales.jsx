@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import useStockCalls from "../service/useStockCalls";
+import useStockCalls from "../service/useGlennAppsCalls";
 import SalesModal from "../components/SalesModal";
 import SalesTable from "../components/SalesTable";
 import { useSelector } from "react-redux";
