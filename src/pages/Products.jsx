@@ -1,22 +1,23 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import useStockCalls from "../service/useStockCalls";
 import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
-import { useSelector } from "react-redux";
 import TableSkeleton, { ErrorMsg, NoDataMsg } from "../components/DataFetchMsg";
+import { useSelector } from "react-redux";
+import useStockCalls from "../service/useGlennAppsCalls";
+
 
 const Products = () => {
   const { products, loading, error } = useSelector((state) => state.stock);
-
-  // const { getStocks } = useStockCalls();
-  const { getProductTable } = useStockCalls();
+  const { getData } = useStockCalls();
+  
 
   const [data, setData] = useState({
-    name: "",
-    categoryId: "",
-    brandId: "",
+    name: "", //product name
+    category: "", //category id
+    price: 0, // product price
+    thumbnail: '', // product thumbnail
   });
 
   const [open, setOpen] = useState(false);
@@ -24,9 +25,10 @@ const Products = () => {
   const handleClose = () => {
     setOpen(false);
     setData({
-      name: "",
-      categoryId: "",
-      brandId: "",
+      name: "", //product name
+      category: "", //category id
+      price: 0, // product price
+      thumbnail: '', // product thumbnail
     });
   };
 
@@ -34,7 +36,6 @@ const Products = () => {
     getData("products");
     getData("categories");
 
-    getProductTable()
   }, []);
 
   return (
@@ -59,7 +60,7 @@ const Products = () => {
 
       {!error && !loading && !products.length && <NoDataMsg />}
 
-      {!loading && !error && products.length > 0 && <ProductTable />}
+      {!loading && !error && products.length > 0 && <ProductTable products={products}/>}
     </div>
   );
 };

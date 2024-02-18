@@ -4,11 +4,9 @@ import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { modalStyle } from "../styles/globalStyles";
-import useStockCalls from "../service/useGlennAppsCalls";
+import useStockCalls from "../service/useStockCalls";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-
 
 export default function PurchasesModal({ open, handleClose, data, setData }) {
   const { addStock, updateStock } = useStockCalls();

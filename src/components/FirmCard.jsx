@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { iconStyle } from "../styles/globalStyles";
-import useStockCalls from "../service/useGlennAppsCalls";
+import useStockCalls from "../service/useStockCalls";
 
 export default function FirmCard({ firm, handleOpen, setData }) {
   const { deleteStock } = useStockCalls();

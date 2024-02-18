@@ -11,15 +11,18 @@ const useAuthCalls = () => {
     const { getUserAuth }  = useIndexedDBService();
     const { axiosWithToken, axiosPublic } = useAxios()
 
-    const login = async (userInfo) => {
-        dispatch(fetchStart())
-        try {
-            const { data } = await axiosPublic.post("/auth/login/", userInfo)
-            dispatch(loginSuccess(data))
-            toastSuccessNotify("The login process is successful.")   
-            navigate("/stock")   
-        } catch (error) {
-            console.log(error)
+    async function login(authData) {
+        console.log(authData, 'authData');
+        const user = await getUserAuth(authData.email);
+        console.log(user, 'user');
+        if (user && user.password === authData.password) {
+            dispatch(loginSuccess({
+                user,
+                token : user.id
+            }));
+            toastSuccessNotify("The login process is successful.");   
+            navigate("/products/lists")
+        } else {
             dispatch(fetchFail())
             toastErrorNotify("The login process failed.");
         }
@@ -45,7 +48,7 @@ const useAuthCalls = () => {
             const { data } = await axiosPublic.post("/users/", registerInfo)
             dispatch(registerSuccess(data))
             toastSuccessNotify("The register process is successful.")   
-            navigate("/stock")   
+            navigate("/products/lists")   
         } catch (error) {
             console.log(error)
             dispatch(fetchFail())
@@ -68,4 +71,3 @@ const useAuthCalls = () => {
 }
 
 export default useAuthCalls
-

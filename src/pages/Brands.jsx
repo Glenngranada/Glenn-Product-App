@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import useStockCalls from "../service/useGlennAppsCalls";
+import useStockCalls from "../service/useStockCalls";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "@mui/material";
