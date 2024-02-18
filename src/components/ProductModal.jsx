@@ -4,55 +4,22 @@ import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { modalStyle } from "../styles/globalStyles";
+import useStockCalls from "../service/useStockCalls";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-
-
-import { MuiFileInput } from 'mui-file-input'
-
-import useStockCalls from "../service/useGlennAppsCalls";
-
 
 export default function ProductModal({ open, handleClose, data, setData }) {
-  const { categories } = useSelector((state) => state.stock);
-
-  const { addData, getData } = useStockCalls();
-
-  const [file, setFile] = useState(null);
-  const [thumbnail, setThumbnail] = useState(null);
+  const { addStock } = useStockCalls();
+  const { brands, categories } = useSelector((state) => state.stock);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
-    console.log(data);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addData('products' ,data);
+    addStock("products", data);
     handleClose();
-    setThumbnail('');
-    setFile(null);
   };
-  
-
-  const handleFileChange = (newFile) => {
-    setFile(newFile)
-    const f = newFile;
-    if (f) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setThumbnail(reader.result);
-        data['thumbnail'] = reader.result;
-        // setData({ ...data, 'thumbnail': reader.result });
-        console.log(data);
-      };
-      reader.readAsDataURL(f);
-    }
-  }
-
-  useEffect(() => {
-    getData("categories");
-  }, []);
 
   return (
     <div>
@@ -73,30 +40,38 @@ export default function ProductModal({ open, handleClose, data, setData }) {
               <Select
                 labelId="category-select-label"
                 id="category-select"
-                name="category"
-                value={data?.category || ""}
+                name="categoryId"
+                value={data?.categoryId || ""}
                 label="Categories"
                 onChange={handleChange}
                 required
               >
                 {categories?.map((category) => (
-                  <MenuItem key={category.name} value={category.name}>
+                  <MenuItem key={category._id} value={category._id}>
                     {category.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
 
-            <TextField
-              label="Price"
-              name="price"
-              id="price"
-              type="text"
-              variant="outlined"
-              value={data.price || ''}
-              onChange={handleChange}
-              required
-            />
+            <FormControl fullWidth>
+              <InputLabel id="brand-select-label">Brands</InputLabel>
+              <Select
+                labelId="brand-select-label"
+                id="brand-select"
+                name="brandId"
+                value={data?.brandId || ""}
+                label="Brands"
+                onChange={handleChange}
+                required
+              >
+                {brands?.map((brand) => (
+                  <MenuItem key={brand._id} value={brand._id}>
+                    {brand.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <TextField
               label="Product Name"
@@ -104,18 +79,10 @@ export default function ProductModal({ open, handleClose, data, setData }) {
               id="name"
               type="text"
               variant="outlined"
-              value={data.name || ''}
+              value={data.name}
               onChange={handleChange}
               required
             />
-
-            <MuiFileInput name value={file} onChange={handleFileChange} />
-            {thumbnail && (
-              <div style={{'display': 'flex', 'justifyContent': 'center','alignItems': 'center'}}>
-                <img src={thumbnail} alt="Thumbnail" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-              </div>
-            )}
-
             <Button type="submit" variant="contained" size="large">
               add product
             </Button>
