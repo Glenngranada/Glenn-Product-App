@@ -5,18 +5,12 @@ import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
 import TableSkeleton, { ErrorMsg, NoDataMsg } from "../components/DataFetchMsg";
 import { useSelector } from "react-redux";
-import useStockCalls from "../service/useStockCalls";
+import useStockCalls from "../service/useGlennAppsCalls";
 
-import useProductServicesCalls from "../service/useProductServicesCalls";
 
 const Products = () => {
-  // const { products, loading, error } = useSelector((state) => state.stock);
-  const { getStocks } = useStockCalls();
-  const { getpProducts } = useProductServicesCalls();
-
-  const [ products, setProducts ] = useState([]);
-  const { error, setError } = useState(false);
-  const [ loading, setLoading ] = useState(true);
+  const { products, loading, error } = useSelector((state) => state.stock);
+  const { getData } = useStockCalls();
   
 
   const [data, setData] = useState({
@@ -36,22 +30,12 @@ const Products = () => {
       price: 0, // product price
       thumbnail: '', // product thumbnail
     });
-
-    getpProducts(function(res){
-      setProducts(res);
-      console.log('close modal trigger products state change', res)
-    })
   };
 
   useEffect(() => {
-    // getStocks("products");
-    // getStocks("categories");
-    // getStocks("brands");
+    getData("products");
+    getData("categories");
 
-    getpProducts(function(res){
-      setProducts(res);
-    })
-    setLoading(false);
   }, []);
 
   return (

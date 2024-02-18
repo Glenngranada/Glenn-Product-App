@@ -10,9 +10,56 @@ import {
 import useAxios from "./useAxios";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
+import useIndexedDBService from './useIndexedDBService'
+
 const useStockCalls = () => {
   const dispatch = useDispatch();
   const { axiosWithToken } = useAxios();
+
+  const { getItems, addItem, deleteItem }  = useIndexedDBService();
+
+  //Custom Glenn App---------
+  const getData = async (storeName) => {
+    dispatch(fetchStart());
+    try {
+      const data  = await getItems(storeName);
+      console.log(data, 'data from glenn calls', storeName);
+      const apiData = data;
+      dispatch(getStocksSuccess({ apiData, url: storeName }));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify("Error accessing data information.");
+      console.log(error);
+    }
+  };
+
+  const addData = async (storeName, newData) => {
+    dispatch(fetchStart());
+    try {
+      await addItem(storeName, newData);
+      toastSuccessNotify("The operation was successful.");
+      getData(storeName)
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify("The operation has failed.");
+      console.log(error);
+    }
+  };
+
+  const deleteData = async (storeName, id) => {
+    dispatch(fetchStart());
+    try {
+      await deleteItem(storeName, id);
+      toastSuccessNotify("Data information deleted.");
+      getData(storeName);
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify("Data could not be deleted");
+      console.log(error);
+    }
+  };
+
+  // Custom Glenn ends--------
 
   const getStocks = async (url) => {
     dispatch(fetchStart());
@@ -123,7 +170,7 @@ const useStockCalls = () => {
     }
   };
 
-  return { getStocks, deleteStock, addStock, updateStock, getPurchasesTable, getSalesTable, getProductTable };
+  return { getStocks, deleteStock, addStock, updateStock, getPurchasesTable, getSalesTable, getProductTable, getData, addData, deleteData };
 
 };
 

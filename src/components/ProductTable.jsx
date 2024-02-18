@@ -3,20 +3,20 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import useStockCalls from "../service/useStockCalls";
+import useStockCalls from "../service/useGlennAppsCalls";
 import useProductServicesCalls from "../service/useProductServicesCalls";
 
 export default function ProductTable({products}) {
   const prevPropRef = React.useRef(null);
 
-  const { deleteStock } = useStockCalls();
+  const { deleteData } = useStockCalls();
   // const { products } = useSelector((state) => state.stock);
 
   const [newproducts , setNewProducts] = React.useState(products);
   const [storageChange, setStorageChange] = React.useState(false);
   const { getpProducts } = useProductServicesCalls();
 
-  const getRowId = (row) => row._id;
+  const getRowId = (row) => row.id;
 
   // const columns = [
   //   {
@@ -83,21 +83,22 @@ export default function ProductTable({products}) {
 
   const columns = [
     {
-      field: "_id",
+      field: "id",
       headerName: "#",
       flex: 1,
       minWidth: 100,
+      maxHeight: 100,
       headerAlign: "center",
       align: "center",
       sortable: false,
     },
     {
-      field: "category",
-      headerName: "Category",
-      flex: 1.5,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
+      field: 'thumbnail',
+      headerName: 'Product Image',
+      width: 150,
+      editable: true,
+      renderCell: (params) => <img src={params.value} />, // renderCell will render the component
+      sortable: false,
     },
     {
       field: "name",
@@ -107,6 +108,15 @@ export default function ProductTable({products}) {
       headerAlign: "center",
       align: "center",
     },
+    {
+      field: "category",
+      headerName: "Category",
+      flex: 1.5,
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+    },
+    
     {
       field: "price",
       headerName: "Price",
@@ -126,7 +136,7 @@ export default function ProductTable({products}) {
       getActions: (params) => [
         <GridActionsCellItem
           icon={<DeleteForeverIcon />}
-          onClick={() => deleteStock("products", params?.id)}
+          onClick={() => deleteData("products", params?.id)}
           label="Delete"
         />,
       ],
@@ -137,10 +147,7 @@ export default function ProductTable({products}) {
   React.useEffect(() => {
     setNewProducts(products);
     console.log(products, ' products dddd')
-    // getpProducts(function(res){
-    //   setNewProducts(res);
-    //   console.log(res, 'newproducts')
-    // })
+    
     // Check if props have changed
     if (prevPropRef.current !== products) {
       // Perform actions based on prop change

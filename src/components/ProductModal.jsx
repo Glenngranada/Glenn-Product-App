@@ -4,22 +4,23 @@ import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { modalStyle } from "../styles/globalStyles";
-import useProductServicesCalls from "../service/useProductServicesCalls";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
 
 import { MuiFileInput } from 'mui-file-input'
 
+import useStockCalls from "../service/useGlennAppsCalls";
+
 
 export default function ProductModal({ open, handleClose, data, setData }) {
-  const { getCategories, addProduct } = useProductServicesCalls();
-  const { brands } = useSelector((state) => state.stock);
+  const { categories } = useSelector((state) => state.stock);
+
+  const { addData, getData } = useStockCalls();
 
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
 
-  const [categories, setCategories] = useState([]);
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data);
@@ -27,7 +28,7 @@ export default function ProductModal({ open, handleClose, data, setData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addProduct(data);
+    addData('products' ,data);
     handleClose();
     setThumbnail('');
     setFile(null);
@@ -50,13 +51,8 @@ export default function ProductModal({ open, handleClose, data, setData }) {
   }
 
   useEffect(() => {
-    getCategories(function(res){
-      console.log(res, 'response');
-      setCategories(res);
-    });
+    getData("categories");
   }, []);
-
-  
 
   return (
     <div>

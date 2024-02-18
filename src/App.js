@@ -5,9 +5,13 @@ import { Provider } from "react-redux";
 import store, { persistor } from "./app/store";
 import { ToastContainer } from "react-toastify";
 import { PersistGate } from "redux-persist/integration/react";
-import React, { useState, useEffect } from 'react';
+import React, {useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import useIndexedDBService from './service/useIndexedDBService';
+
 function App() {
+  const { openDatabase } = useIndexedDBService();
   const theme = createTheme({
     palette: {
       primary: {
@@ -20,6 +24,7 @@ function App() {
   });
 
   useEffect(() => {
+    openDatabase();
     // Check if the initial value is already set in localStorage
     const category = localStorage.getItem('category');
 
@@ -33,7 +38,7 @@ function App() {
       ]);
       localStorage.setItem('category', categoryParsed);
     } 
-  }, []);
+  }, [openDatabase]);
   return (
     <>
       <ThemeProvider theme={theme}>
